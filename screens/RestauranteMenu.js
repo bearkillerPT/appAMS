@@ -1,26 +1,19 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-
-export default function RestauranteMenu({ navigation, route }) {
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import App from '../App';
+import { addCart } from '../assets/cartState';
+export function RestauranteMenu(props) {
     //<Image source={restaurante.image} style={styles.image}/> 
-    var restaurante = route.params.restaurante;
-    var context = route.params.cartContext;
-    const cart = React.useContext(context).cart;
-    const addCart = React.useContext(context).addToCartHandler;
-    console.log(cart)
-    console.log(addCart)
-    const addToCart = (prato) => {
-        console.log(prato)
-        addCart(prato);
-        console.log(cart)
-    }
+    console.log(props)
     return (
         <View>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
             <ScrollView>{
                 Object.keys(restaurante.Pratos).map(prato => {
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurante.Pratos[prato].id} onPress={() => addToCart(restaurante.Pratos[prato])}>
+                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurante.Pratos[prato].id} onPress={() => addCart(restaurante.Pratos[prato])}>
                             <View style={styles.containerRow}>
                                 <Image style={styles.image} source={restaurante.Pratos[prato].image} />
                                 <View style={styles.containerColumn}>
@@ -38,8 +31,12 @@ export default function RestauranteMenu({ navigation, route }) {
 
     );
 }
+const mapStateToProps = (state) => {
+    const { cart } = state;
+    return { cart };
+};
 
-
+export default connect(mapStateToProps)(App);
 
 const styles = StyleSheet.create({
     containerRow: {

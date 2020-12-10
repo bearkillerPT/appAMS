@@ -3,12 +3,12 @@ const INITIAL_CART = {
     cart: []
 }
 
-const addPrato = prato => ({
+export const addPrato = prato => ({
     'type' : 'addPrato',
     'payload' : prato
 });
 
-export default function cartReducer(state = INITIAL_CART, action) {
+function cartReducer(state = INITIAL_CART, action)   {
     switch(action.type) {
         case 'addPrato':
             let {cart} = state;
@@ -18,3 +18,8 @@ export default function cartReducer(state = INITIAL_CART, action) {
             return state;
     }
 }
+
+export default combineReducers({
+    cart: cartReducer
+  });
+  

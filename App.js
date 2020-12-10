@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './screens/HomeStack';
-import CartRestaurante from './screens/RestauranteCart';
 import Cart from './screens/Cart';
 import { NavigationContainer } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';  
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import cartReducer from './assets/cartState';
+import restauranteMenu from './screens/RestauranteMenu';
+import restaurantes from './screens/Restaurantes';
+import home from './screens/Home';
 var imgVegifruit = require('./assets/vegifruit.png');
 var imgGreenCity = require('./assets/greencity.png');
 var imgSaladasmais = require('./assets/saladasmais.jpg');
@@ -108,32 +110,63 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   const store = createStore(cartReducer);
   console.log();
-  return(
-      <Provider store={store}>
+  return (
+    <Provider store={store}>
       <NavigationContainer>
-            <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
-              tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
+        <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-                if (route.name === 'Home') {
-                  iconName = "ios-home";
-                } else if (route.name === 'Restaurantes') {
-                  iconName = "ios-restaurant";
-                }
-                else iconName = "md-cart";
-                // You can return any component that you like here!
-                return <Icon name={iconName} size={size} color={color} />;
-              },
-            })}
-            tabBarOptions={{
-              activeTintColor: 'tomato',
-              inactiveTintColor: 'gray',
-            }}>
-              <Tab.Screen name="Restaurantes" component={CartRestaurante} />
-              <Tab.Screen name="Home" component={Home} />
-              <Tab.Screen name="Carrinho" component={Cart}/>
-            </Tab.Navigator>
-          </NavigationContainer>
-      </Provider>
+            if (route.name === 'Home') {
+              iconName = "ios-home";
+            } else if (route.name === 'Restaurantes') {
+              iconName = "ios-restaurant";
+            }
+            else iconName = "md-cart";
+            // You can return any component that you like here!
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}>
+          <Tab.Screen name="Restaurantes" component={CartStack} />
+          <Tab.Screen name="Home" component={HomeStack} />
+          <Tab.Screen name="Carrinho" component={Cart} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+}
+const CartStackNav = createStackNavigator();
+
+function CartStack(route) {
+  let restaurante = '';
+  console.log(route)
+  if(route.params)
+    restaurante = route.params.restaurante;
+  return (
+      <CartStackNav.Navigator initialroute={'Restaurantes'} >
+        <CartStackNav.Screen name="Restaurantes" component={restaurantes} />
+        <CartStackNav.Screen name="Pratos" component={restauranteMenu}  initialParams={{restaurante: restaurante}}/>
+      </CartStackNav.Navigator>
+      
+  );
+}
+
+const Stack = createStackNavigator();
+function HomeStack(route) {
+  console.log(route)
+  let restaurante = '';
+  if (route.params)
+    restaurante = route.params.restaurante;
+  return (
+      <Stack.Navigator initialroute={'Home'} >
+        <Stack.Screen name="Home" component={home} />
+        <Stack.Screen name="Pratos" component={restauranteMenu} initialParams={{ restaurante }} />
+      </Stack.Navigator>
+
+
   );
 }

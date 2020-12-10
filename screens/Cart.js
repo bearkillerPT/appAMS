@@ -1,10 +1,9 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-
-var imgQuichVeg = require('../assets/quicheVegsGluten.jpg');
-var imgCremeEspi = require('../assets/cremedeespinafres.jpg');
-var imgSaladaQSerra = require('../assets/saladaqueijoserra.jpg');
-export default function Cart({ route }) {
+const Stack = createStackNavigator();
+export function CartScreen({navigation, route}) {
     const getTotal = () => {
         let res = 0;
         for (let prato of cart) {
@@ -12,8 +11,7 @@ export default function Cart({ route }) {
         }
         return res;
     }
-    const cart = React.useContext(route.params.cart).cart;
-    console.log(cart);
+    const cart = [];
     return (
         <View>
             <Text style={styles.restaurantesOffer}>Carrinho:</Text>
@@ -31,6 +29,7 @@ export default function Cart({ route }) {
                                 </View>
                             </View>
                         </TouchableHighlight>
+
                     );
                 })
             }</ScrollView>
@@ -39,6 +38,17 @@ export default function Cart({ route }) {
 
     );
 }
+
+export default function Cart(route) {
+
+    console.log(route)
+    return (
+        <Stack.Navigator initialroute={'Home'} >
+            <Stack.Screen name="Home" component={CartScreen}/>
+        </Stack.Navigator>);
+
+}
+
 const styles = StyleSheet.create({
     containerRow: {
         flexDirection: 'row'
