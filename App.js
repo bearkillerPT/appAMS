@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import cartReducer from './assets/cartState';
 import RestauranteStack from './screens/RestauranteStack';
 import HomeStack from './screens/HomeStack';
+var xmasPromo = require('./assets/xmaspromo.jpg');
+var newYearPromo = require('./assets/newYearPromo.jpg');
 var imgVegifruit = require('./assets/vegifruit.png');
 var imgGreenCity = require('./assets/greencity.png');
 var imgSaladasmais = require('./assets/saladasmais.jpg');
@@ -16,6 +18,21 @@ var imgSandesBase = require('./assets/sandesBase.jpg');
 var imgPratoCarne = require('./assets/pratoCarne.jpg');
 var imgPratoPeixe = require('./assets/pratoPeixe.jpg');
 
+export const promos = {
+    "Promoção de Natal": {
+      "name" : "Promoção de Natal",
+      "descr": "Poupe 30% ou mais de 22/12 até 27/12",
+      "id" : 0,
+      "image":xmasPromo,
+    },
+    "Promoção de Ano Novo": {
+      "name" : "Promoção de Ano Novo",
+      "descr": "Poupe 30% ou mais de 30/12 até 02/01",
+      "id" : 1,
+      "image": newYearPromo,
+    
+    }
+}
 
 export const restaurants = {
   "Vegifruit": {

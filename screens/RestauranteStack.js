@@ -14,7 +14,7 @@ export default function RestauranteStack(route) {
   if(route.params)
     restaurante = route.params.restaurante;
   return (
-      <Stack.Navigator initialroute={'Restaurantes'} >
+      <Stack.Navigator initialroute={'Restaurantes'} screenOptions={{headerTitleAlign: 'center' , headerStyle:{backgroundColor:'darkcyan'}, headerTintColor:'white'}} >
         <Stack.Screen name="Restaurantes" component={restaurantes} />
         <Stack.Screen name="Pratos" component={restauranteMenu}  initialParams={{restaurante: restaurante}}/>
       </Stack.Navigator>

@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
 const Stack = createStackNavigator();
 var imgQuichVeg = require('../assets/quicheVegsGluten.jpg');
 var imgCremeEspi = require('../assets/cremedeespinafres.jpg');
@@ -58,6 +58,9 @@ export function CartScreen({ navigation, route }) {
                 })
             }</ScrollView>
             <Text style={styles.restaurantesOffer}>Preço total: {getTotal()}€</Text>
+            <TouchableOpacity style={styles.payButtonContainer}>
+                <Text style={styles.payButtonText}>Pagar</Text>
+            </TouchableOpacity>
         </View>
 
     );
@@ -67,7 +70,7 @@ export default function Cart(route) {
 
     console.log(route)
     return (
-        <Stack.Navigator initialroute={'Carrinho'} >
+        <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' },  headerTintColor:'white' }}>
             <Stack.Screen name="Carrinho" component={CartScreen} />
         </Stack.Navigator>);
 
@@ -101,5 +104,19 @@ const styles = StyleSheet.create({
     image: {
         width: 150,
         height: 100,
+    },
+    payButtonContainer: {
+        elevation: 8,
+        backgroundColor: "#009688",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12
+    },
+    payButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
     }
 });

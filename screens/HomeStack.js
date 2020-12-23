@@ -9,7 +9,7 @@ export default function HomeStack(route) {
   if (route.params)
     restaurante = route.params.restaurante;
   return (
-      <Stack.Navigator initialroute={'Home'} >
+      <Stack.Navigator initialroute={'Home'} screenOptions={{headerTitleAlign: 'center', headerStyle:{backgroundColor:'darkcyan'},  headerTintColor:'white'}}>
         <Stack.Screen name="Home" component={home} />
         <Stack.Screen name="Pratos" component={restauranteMenu} initialParams={{ restaurante }} />
       </Stack.Navigator>
