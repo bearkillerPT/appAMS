@@ -17,6 +17,7 @@ export default function Home({ navigation, route }) {
                                         <View style={{ flexDirection: 'column' }}>
                                             <Image source={promos[restaurante].image} style={styles.image} />
                                             <Text style={styles.restaurantesTitle}>{restaurante}</Text>
+                                            <Text style={styles.restaurantesDescr}>{promos[restaurante].descr}</Text>
                                         </View>
                                     }</View>
                                 </TouchableHighlight>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     restaurantesPromo: {
         flexDirection: 'column',
         padding: 5,
-        width: 150,
+        width: 160,
         height: 200,
     },
     image: {
@@ -69,6 +70,10 @@ const styles = StyleSheet.create({
     restaurantesTitle: {
         fontSize: 15,
         fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    restaurantesDescr: {
+        fontSize: 13,
         textAlign: 'center',
     },
     restaurantesOffer: {
