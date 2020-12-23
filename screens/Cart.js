@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
 const Stack = createStackNavigator();
-export function CartScreen({navigation, route}) {
+var imgQuichVeg = require('../assets/quicheVegsGluten.jpg');
+var imgCremeEspi = require('../assets/cremedeespinafres.jpg');
+var imgSaladaQSerra = require('../assets/saladaqueijoserra.jpg');
+export function CartScreen({ navigation, route }) {
     const getTotal = () => {
         let res = 0;
         for (let prato of cart) {
@@ -11,10 +14,31 @@ export function CartScreen({navigation, route}) {
         }
         return res;
     }
-    const cart = [];
+    const cart = [
+        {
+            "name": "Salada de queijo da serra",
+            "id": 0,
+            "Preço": 7,
+            "Opçoes": ["Extra azeitonas"],
+            "image": imgSaladaQSerra
+        },
+        {
+            "name": "Quiche Vegetariana s/Glúten",
+            "id": 1,
+            "Preço": 6.5,
+            "Opções": [],
+            "image": imgQuichVeg,
+        },
+        {
+            "name": "Creme de espinafres",
+            "id": 2,
+            "Preço": 6.5,
+            "Opções": [],
+            "image": imgCremeEspi,
+        },
+    ];
     return (
         <View>
-            <Text style={styles.restaurantesOffer}>Carrinho:</Text>
             <ScrollView>{
                 cart.map(prato => {
                     return (
@@ -43,8 +67,8 @@ export default function Cart(route) {
 
     console.log(route)
     return (
-        <Stack.Navigator initialroute={'Home'} >
-            <Stack.Screen name="Home" component={CartScreen}/>
+        <Stack.Navigator initialroute={'Carrinho'} >
+            <Stack.Screen name="Carrinho" component={CartScreen} />
         </Stack.Navigator>);
 
 }
@@ -60,6 +84,7 @@ const styles = StyleSheet.create({
     },
     restaurantesOffer: {
         fontSize: 15,
+        padding: 15,
         fontWeight: 'bold',
         textAlign: 'left',
         color: 'black'

@@ -13,7 +13,7 @@ export default function Home({ navigation, route }) {
                         return (
                             <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurants[restaurante].id} onPress={() => navigation.push('Pratos', { restaurante: restaurants[restaurante] })}>
                                 <View key={restaurants[restaurante].id} style={styles.restaurantesPromo}>{
-                                    <View style={{ flexDirection: 'column'}}>
+                                    <View style={{ flexDirection: 'column' }}>
                                         <Image source={restaurants[restaurante].image} style={styles.image} />
                                         <Text style={styles.restaurantesTitle}>{restaurante}</Text>
                                     </View>

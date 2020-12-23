@@ -8,7 +8,7 @@ import restaurantes from './Restaurantes';
 
 
 const Stack = createStackNavigator();
-export default function CartStack(route) {
+export default function RestauranteStack(route) {
   let restaurante = '';
   console.log(route)
   if(route.params)
