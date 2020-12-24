@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-import { bindActionCreators } from 'redux';
-import { addCart } from '../assets/cartState';
+import { useDispatch } from 'react-redux';
+import { addPrato } from '../assets/cartState';
 export default function RestauranteMenu({route}) {
     //<Image source={restaurante.image} style={styles.image}/> 
     const restaurante = route.params.restaurante;
-    const store = route.params.store;
+    const dispatch = useDispatch();
     return (
         <View>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
             <ScrollView>{
                 Object.keys(restaurante.Pratos).map(prato => {
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurante.Pratos[prato].id} onPress={() => {}}>
+                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurante.Pratos[prato].id} onPress={() => dispatch(addPrato(restaurante.Pratos[prato]))}>
                             <View style={styles.containerRow}>
                                 <Image style={styles.image} source={restaurante.Pratos[prato].image} />
                                 <View style={styles.containerColumn}>

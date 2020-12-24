@@ -1,12 +1,20 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
+import {delPrato} from './../assets/cartState';
+import { useSelector, useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
-const Stack = createStackNavigator();
 var imgQuichVeg = require('../assets/quicheVegsGluten.jpg');
 var imgCremeEspi = require('../assets/cremedeespinafres.jpg');
 var imgSaladaQSerra = require('../assets/saladaqueijoserra.jpg');
-export function CartScreen({ navigation, route }) {
+
+
+export function CartScreen(props) {
+    const dispatch = useDispatch(); 
+    const cart = useSelector(state => state.cartReducer.cart);
+    const rest = useSelector(state => state.cartReducer.restaurant);
+    console.log(cart);
+    console.log(rest);
     const getTotal = () => {
         let res = 0;
         for (let prato of cart) {
@@ -14,35 +22,12 @@ export function CartScreen({ navigation, route }) {
         }
         return res;
     }
-    const cart = [
-        {
-            "name": "Salada de queijo da serra",
-            "id": 0,
-            "Preço": 7,
-            "Opçoes": ["Extra azeitonas"],
-            "image": imgSaladaQSerra
-        },
-        {
-            "name": "Quiche Vegetariana s/Glúten",
-            "id": 1,
-            "Preço": 6.5,
-            "Opções": [],
-            "image": imgQuichVeg,
-        },
-        {
-            "name": "Creme de espinafres",
-            "id": 2,
-            "Preço": 6.5,
-            "Opções": [],
-            "image": imgCremeEspi,
-        },
-    ];
     return (
         <View>
             <ScrollView>{
                 cart.map(prato => {
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={prato.id}>
+                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={prato.id} onPress={() => dispatch(delPrato(prato))}>
                             <View style={styles.containerRow}>
                                 <Image style={styles.image} source={prato.image} />
                                 <View style={styles.containerColumn}>
@@ -66,14 +51,25 @@ export function CartScreen({ navigation, route }) {
     );
 }
 
-export default function Cart(route) {
+const Stack = createStackNavigator();
 
+export default function Cart(route) {
+    console.log("navigator")
     console.log(route)
     return (
         <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' },  headerTintColor:'white' }}>
             <Stack.Screen name="Carrinho" component={CartScreen} />
         </Stack.Navigator>);
 
+}
+
+const mapStateToProps = (state) => {console.log("mapState");console.log(state.cartReducer.cart); return {cartList : state.cartReducer.cart }};
+
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        add : (prato) => dispatch({type: "addPrato", prato : prato})
+    }
 }
 
 const styles = StyleSheet.create({

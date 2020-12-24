@@ -3,7 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Cart from './screens/Cart';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import cartReducer from './assets/cartState';
+import { Provider } from 'react-redux';
+import configStore from './Store';
 import RestauranteStack from './screens/RestauranteStack';
 import HomeStack from './screens/HomeStack';
 var xmasPromo = require('./assets/xmaspromo.jpg');
@@ -19,19 +20,19 @@ var imgPratoCarne = require('./assets/pratoCarne.jpg');
 var imgPratoPeixe = require('./assets/pratoPeixe.jpg');
 
 export const promos = {
-    "Promoção de Natal": {
-      "name" : "Promoção de Natal",
-      "descr": "Poupe 30% ou mais de 22/12 até 27/12",
-      "id" : 0,
-      "image":xmasPromo,
-    },
-    "Promoção de Ano Novo": {
-      "name" : "Promoção de Ano Novo",
-      "descr": "Poupe 30% ou mais de 30/12 até 02/01",
-      "id" : 1,
-      "image": newYearPromo,
-    
-    }
+  "Promoção de Natal": {
+    "name": "Promoção de Natal",
+    "descr": "Poupe 30% ou mais de 22/12 até 27/12",
+    "id": 0,
+    "image": xmasPromo,
+  },
+  "Promoção de Ano Novo": {
+    "name": "Promoção de Ano Novo",
+    "descr": "Poupe 30% ou mais de 30/12 até 02/01",
+    "id": 1,
+    "image": newYearPromo,
+
+  }
 }
 
 export const restaurants = {
@@ -119,12 +120,20 @@ export const restaurants = {
   },
 }
 
+const store = configStore();
 
-const store = [];
+
+export default function App() {
+  return(
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+function AppContent() {
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
@@ -145,12 +154,14 @@ export default function App() {
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
         }}>
-        <Tab.Screen name="Restaurantes" component={RestauranteStack} initialParams={store}/>
-        <Tab.Screen name="Home" component={HomeStack} initialParams={store}/>
-        <Tab.Screen name="Carrinho" component={Cart} initialParams={store}/>
+        <Tab.Screen name="Restaurantes" component={RestauranteStack} />
+        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name="Carrinho" component={Cart} />
       </Tab.Navigator>
     </NavigationContainer>);
 }
+
+
 
 
 

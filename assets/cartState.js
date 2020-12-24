@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
+import { restaurants } from '../App';
 const INITIAL_CART = {
-    cart: []
+    cart: [],
+    restaurant: ''
 }
 
 export const addPrato = prato => ({
@@ -8,18 +10,30 @@ export const addPrato = prato => ({
     'payload' : prato
 });
 
+export const delPrato = prato => ({
+    'type' : 'delPrato',
+    'payload' : prato
+});
+
 function cartReducer(state = INITIAL_CART, action)   {
     switch(action.type) {
         case 'addPrato':
-            let {cart} = state;
-            cart.push(action.payload);
-            break;
+            let restauranteIn = '';
+            for( let restaurant in restaurants ) for( let prato in restaurant.Pratos ) if (prato === action.payload) restauranteIn = restaurant.name;
+            if(state.restaurant != '') {
+                if(state.restaurant != restauranteIn) return; 
+            }
+            return{...state,
+            cart: state.cart.concat(action.payload)}
+        case 'delPrato':
+            return{...state,
+            cart: state.cart.filter(prato => prato !== action.payload)}
         default:
             return state;
     }
 }
 
 export default combineReducers({
-    cart: cartReducer
+    cartReducer: cartReducer
   });
   
