@@ -35,6 +35,7 @@ export default function Feedback({ route }) {
                                         type='star'
                                         readonly
                                         startingValue={pedido.rating}
+                                        tintColor='rgb(242,242,242)'
                                         style={styles.rating}
                                         imageSize={15}
                                     />
@@ -49,6 +50,7 @@ export default function Feedback({ route }) {
                     <Rating
                         type='star'
                         readonly
+                        tintColor='rgb(242,242,242)'
                         startingValue={averageR}
                     />
                 </View>

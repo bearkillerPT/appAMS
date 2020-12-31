@@ -1,1 +1,0 @@
-The original code for react-native-ratings sets the image background to white and editing the source code was the fastest way I came up with. This is the edited one.

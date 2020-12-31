@@ -98,29 +98,34 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' style={styles.input} onChangeText={pass => setPassword(pass)} secureTextEntry />
                 </View>
-                <TouchableOpacity style={styles.loginButtonContainer} onPress={() => {
-                    for (let typeUser of Object.keys(users))
-                        if (user === typeUser) {
-                            switch (users[user].type) {
-                                case "cliente":
-                                    setIsLogged(true);
-                                    setIsCliente(true);
-                                    break;
-                                case "restaurante":
-                                    setIsLogged(true);
-                                    setIsRestaurante(true);
-                                    break;
-                                case "estafeta":
-                                    setIsLogged(true);
-                                    setIsEstafeta(true);
-                                    break;
-                                default:
-                                    break;
+                <View style={styles.containerRow}>
+                    <TouchableOpacity style={styles.loginButtonContainer} onPress={() => {
+                        for (let typeUser of Object.keys(users))
+                            if (user === typeUser) {
+                                switch (users[user].type) {
+                                    case "cliente":
+                                        setIsLogged(true);
+                                        setIsCliente(true);
+                                        break;
+                                    case "restaurante":
+                                        setIsLogged(true);
+                                        setIsRestaurante(true);
+                                        break;
+                                    case "estafeta":
+                                        setIsLogged(true);
+                                        setIsEstafeta(true);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
-                        }
-                }}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
+                    }}>
+                        <Text style={styles.loginButtonText}>       Login       </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.loginButtonContainer}>
+                        <Text style={styles.loginButtonText}>    Registar    </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
@@ -137,6 +142,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1
 
+    },
+    containerRow: {
+        paddingTop: 20,
+        flexDirection: 'row'
     },
     loginContainer: {
         backgroundColor: 'darkcyan',
@@ -163,9 +172,9 @@ const styles = StyleSheet.create({
     loginButtonContainer: {
         elevation: 8,
         backgroundColor: "#009688",
-        borderRadius: 10,
+        borderRadius: 28,
         paddingVertical: 10,
-        paddingHorizontal: 12
+        paddingHorizontal: 12,
     },
     loginButtonText: {
         fontSize: 18,
