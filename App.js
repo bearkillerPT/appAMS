@@ -1,167 +1,177 @@
 import React, { useState } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Cart from './screens/Cart';
-import { NavigationContainer } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Provider } from 'react-redux';
-import configStore from './Store';
-import RestauranteStack from './screens/RestauranteStack';
-import HomeStack from './screens/HomeStack';
-var xmasPromo = require('./assets/xmaspromo.jpg');
-var newYearPromo = require('./assets/newYearPromo.jpg');
-var imgVegifruit = require('./assets/vegifruit.png');
-var imgGreenCity = require('./assets/greencity.png');
-var imgSaladasmais = require('./assets/saladasmais.jpg');
-var imgQuichVeg = require('./assets/quicheVegsGluten.jpg');
-var imgCremeEspi = require('./assets/cremedeespinafres.jpg');
-var imgSaladaQSerra = require('./assets/saladaqueijoserra.jpg');
-var imgSandesBase = require('./assets/sandesBase.jpg');
-var imgPratoCarne = require('./assets/pratoCarne.jpg');
-var imgPratoPeixe = require('./assets/pratoPeixe.jpg');
+import { TextInput, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import ClienteApp from './screens/AppCliente/AppClientes';
+import RestauranteApp from './screens/AppRestaurante/AppRestaurante';
+import EstafetaApp from './screens/AppEstafeta/AppEstafeta';
 
-export const promos = {
-  "Promoção de Natal": {
-    "name": "Promoção de Natal",
-    "descr": "Poupe 30% ou mais de 22/12 até 27/12",
-    "id": 0,
-    "image": xmasPromo,
-  },
-  "Promoção de Ano Novo": {
-    "name": "Promoção de Ano Novo",
-    "descr": "Poupe 30% ou mais de 30/12 até 02/01",
-    "id": 1,
-    "image": newYearPromo,
-
-  }
+const users = {
+    "cliente": {
+        "type": "cliente",
+        "password": "cliente",
+    },
+    "restaurante": {
+        "type": "restaurante",
+        "password": "restaurante",
+        "restaurante": "Vegifruit"
+    },
+    "estafeta": {
+        "type": "estafeta",
+        "password": "estafeta",
+        "feedback": [
+            {
+                "id": 1,
+                "restaurante": "Vegifruit",
+                "rating": 5
+            },
+            {
+                "id": 2,
+                "restaurante": "Saladas+",
+                "rating": 4
+            },
+            {
+                "id": 3,
+                "restaurante": "Green City quiches & saladas, co.",
+                "rating": 4
+            },
+        ],
+        "pedidos": [
+            {
+                "id": 1,
+                "restaurante": "Vegifruit",
+                "prato": "Salada de queijo da serra",
+                "morada": "Universidade de Aveiro, DETI"
+            },
+            {
+                "id": 2,
+                "restaurante": "Saladas+",
+                "prato": "Prato do dia Peixe",
+                "morada": "Universidade de Aveiro, DECA"
+            },
+            {
+                "id": 3,
+                "restaurante": "Green City quiches & saladas, co.",
+                "prato": "Quiche especial",
+                "morada": "Universidade de Aveiro, CP"
+            },
+        ]
+    },
 }
 
-export const restaurants = {
-  "Vegifruit": {
-    "name": "Vegifruit",
-    "id": 0,
-    "PricePoint": "€",
-    "Address": "Rua de São Sebastião, 122 3810 - 187 Aveiro",
-    "Tags": ["Vegan", "Saladas", "Biologico"],
-    "Pratos": {
-      "Salada de queijo da serra": {
-        "name": "Salada de queijo da serra",
-        "id": 0,
-        "Preço": 7,
-        "Opçoes": ["Extra azeitonas"],
-        "image": imgSaladaQSerra
-      },
-      "Quiche Vegetariana s/Glúten": {
-        "name": "Quiche Vegetariana s/Glúten",
-        "id": 1,
-        "Preço": 6.5,
-        "Opções": [],
-        "image": imgQuichVeg,
-      },
-      "Creme de espinafres": {
-        "name": "Creme de espinafres",
-        "id": 2,
-        "Preço": 6.5,
-        "Opções": [],
-        "image": imgCremeEspi,
-      },
+const AppTab = createStackNavigator();
+
+export default function AppContent() {
+    const [user, setUser] = useState("");
+    const [isLogged, setIsLogged] = useState(false);
+    const [isCliente, setIsCliente] = useState(false);
+    const [isRestaurante, setIsRestaurante] = useState(false);
+    const [isEstafeta, setIsEstafeta] = useState(false);
+    return (<>
+        {isLogged &&
+            <>
+                {isCliente &&
+                    <ClienteApp />
+                }
+                {isRestaurante &&
+                    <RestauranteApp restaurante={users[user]} />
+                }
+                {isEstafeta &&
+                    <EstafetaApp estafeta={users[user]} />
+                }
+            </>
+        }
+        {!isLogged &&
+            <Login user={user} setUser={setUser} setIsLogged={setIsLogged} setIsCliente={setIsCliente} setIsRestaurante={setIsRestaurante} setIsEstafeta={setIsEstafeta} />
+        }
+    </>);
+}
+
+function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsEstafeta, user, setUser }) {
+    const [password, setPassword] = useState("");
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Nutrilink</Text>
+            <View style={styles.loginContainer}>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Username' style={styles.input} onChangeText={username => setUser(username)} />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Password' style={styles.input} onChangeText={pass => setPassword(pass)} secureTextEntry />
+                </View>
+                <TouchableOpacity style={styles.loginButtonContainer} onPress={() => {
+                    for (let typeUser of Object.keys(users))
+                        if (user === typeUser) {
+                            switch (users[user].type) {
+                                case "cliente":
+                                    setIsLogged(true);
+                                    setIsCliente(true);
+                                    break;
+                                case "restaurante":
+                                    setIsLogged(true);
+                                    setIsRestaurante(true);
+                                    break;
+                                case "estafeta":
+                                    setIsLogged(true);
+                                    setIsEstafeta(true);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                }}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+
+const goToApp = (navigation, user, password,) => {
+    console.log(navigation)
+
+}
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'darkcyan',
+        alignItems: 'center',
+        flex: 1
 
     },
-    "image": imgVegifruit,
-  },
-  "Green City quiches & saladas, co.": {
-    "name": "Green City quiches & saladas, co.",
-    "id": 1,
-    "PricePoint": "€",
-    "Address": "R. de Castro Matoso 28 A, 3810-079 Aveiro",
-    "Tags": ["Vegan", "Saladas", "Quiches", "Biologico"],
-    "Pratos": {
-      "Quiche especial": {
-        "name": "Quiche especial",
-        "id": 0,
-        "Preço": 6,
-        "Opçoes": ["Tamanho grande"],
-        "image": imgGreenCity
-      }
+    loginContainer: {
+        backgroundColor: 'darkcyan',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
     },
-    "image": imgGreenCity,
-  },
-  "Saladas+": {
-    "name": "Saladas+",
-    "id": 2,
-    "PricePoint": "€",
-    "Address": "R. de São Sebastião 31, 3810-187 Aveiro",
-    "Tags": ["Vegan", "Saladas", , "Biologico"],
-    "Pratos": {
-      "Sandes Base": {
-        "name": "Sandes Base",
-        "id": 0,
-        "Preço": 3.10,
-        "Opçoes": ["Extra ovo"],
-        "image": imgSandesBase
-      },
-
-      "Prato do dia Peixe": {
-        "name": "Prato do dia Peixe",
-        "id": 1,
-        "Preço": 7.45,
-        "Opçoes": ["Extra tempero"],
-        "image": imgPratoPeixe
-      },
-
-      "Prato do dia Carne": {
-        "name": "Prato do dia Carne",
-        "id": 2,
-        "Preço": 7.45,
-        "Opçoes": ["Extra acompanhamento"],
-        "image": imgPratoCarne
-      }
+    title: {
+        borderTopWidth: 100,
+        borderTopColor: 'darkcyan',
+        fontSize: 40,
+        fontWeight: 'bold',
+        color: 'cornsilk'
     },
-    "image": imgSaladasmais,
-  },
-}
-
-const store = configStore();
-
-
-export default function App() {
-  return(
-    <Provider store={store}>
-      <AppContent />
-    </Provider>
-  );
-}
-
-const Tab = createBottomTabNavigator();
-
-function AppContent() {
-  return (
-    <NavigationContainer independent={true}>
-      <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === 'Home') {
-            iconName = "ios-home";
-          } else if (route.name === 'Restaurantes') {
-            iconName = "ios-restaurant";
-          }
-          else iconName = "md-cart";
-          // You can return any component that you like here!
-          return <Icon name={iconName} size={size} color={color} />;
-        },
-      })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
-        }}>
-        <Tab.Screen name="Restaurantes" component={RestauranteStack} />
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Carrinho" component={Cart} />
-      </Tab.Navigator>
-    </NavigationContainer>);
-}
-
-
-
-
-
+    inputView: {
+        borderBottomWidth: 10,
+        borderBottomColor: 'darkcyan'
+    },
+    input: {
+        backgroundColor: 'darkgray',
+        padding: 15,
+        borderRadius: 5,
+    },
+    loginButtonContainer: {
+        elevation: 8,
+        backgroundColor: "#009688",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12
+    },
+    loginButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+        textTransform: "uppercase"
+    }
+});

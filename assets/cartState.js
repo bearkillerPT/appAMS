@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { restaurants } from '../App';
+import { restaurants } from '../screens/AppCliente/AppClientes';
 const INITIAL_CART = {
     cart: [],
     restaurant: ''
