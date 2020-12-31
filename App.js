@@ -38,15 +38,16 @@ const users = {
         "pedidos": [
             {
                 "id": 1,
-                "restaurante": "Vegifruit",
-                "prato": "Salada de queijo da serra",
-                "morada": "Universidade de Aveiro, DETI"
-            },
-            {
-                "id": 2,
                 "restaurante": "Saladas+",
                 "prato": "Prato do dia Peixe",
                 "morada": "Universidade de Aveiro, DECA"
+            },
+            
+            {
+                "id": 2,
+                "restaurante": "Vegifruit",
+                "prato": "Salada de queijo da serra",
+                "morada": "Universidade de Aveiro, DETI"
             },
             {
                 "id": 3,

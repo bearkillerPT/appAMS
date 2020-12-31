@@ -47,12 +47,21 @@ export default function Feedback({ route }) {
             }
                 <View>
                     <Text style={styles.restaurantesOffer}>Average Rating: </Text>
-                    <Rating
-                        type='star'
-                        readonly
-                        tintColor='rgb(242,242,242)'
-                        startingValue={averageR}
-                    />
+                    <View style={styles.containerRow}>
+                        <Rating
+                            type='star'
+                            readonly
+                            tintColor='rgb(242,242,242)'
+                            startingValue={averageR}
+                        />
+                        <Text style={{
+                            fontSize: 15,
+                            fontWeight: 'bold',
+                            textAlign: 'left',
+                            color: 'black',
+                            alignSelf: 'center'
+                        }}>{averageR.toFixed(2)}/5!</Text>
+                    </View>
                 </View>
             </ScrollView>
         </View >
