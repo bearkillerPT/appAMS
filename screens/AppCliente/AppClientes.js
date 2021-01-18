@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import {Restart} from 'fiction-expo-restart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Cart from '../AppCliente/Cart';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Provider } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setLogged } from '../../assets/cartState';
 import configStore from '../../Store';
 import RestauranteStack from '../AppCliente/RestauranteStack';
 import HomeStack from '../AppCliente/HomeStack';
@@ -123,7 +126,7 @@ export const restaurants = {
 const store = configStore();
 
 
-export default function App() {
+export default function App(route) {
   return(
     <Provider store={store}>
       <AppContent />
@@ -131,9 +134,19 @@ export default function App() {
   );
 }
 
+
+export function Logout({navigation}) {
+
+  Restart();
+  return(<></>);
+}
+
+
 const Tab = createBottomTabNavigator();
 
 function AppContent() {
+  const dispatch = useDispatch();
+  dispatch(setLogged(false));
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
@@ -157,6 +170,7 @@ function AppContent() {
         <Tab.Screen name="Restaurantes" component={RestauranteStack} />
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Carrinho" component={Cart} />
+        <Tab.Screen name="Logout" component={Logout} />
       </Tab.Navigator>
     </NavigationContainer>);
 }

@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { Provider } from 'react-redux';
+import configStore from '../../Store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import OrdersStack from './OrdersStack';
+import {Restart} from 'fiction-expo-restart';
+import { useDispatch } from 'react-redux';
+import { setLogged } from '../../assets/cartState';
 import FeedbackStack from './FeedbackStack';
 var imgVegifruit = require('../../assets/vegifruit.png');
 var imgGreenCity = require('../../assets/greencity.png');
@@ -99,10 +104,26 @@ export const restaurants = {
   },
 }
 
+
+
+const store = configStore();
+
+
+export default function AppWraper(route) {
+  return(
+    <Provider store={store}>
+      <App restaurante={route}/>
+    </Provider>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
-export default function App({estafeta}) {
-  console.log(estafeta)
+function App({restaurante}) {
+  console.log(restaurante);
+  const dispatch = useDispatch();
+  let estafeta = restaurante.estafeta;
+  dispatch(setLogged(false));
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator initialRouteName='Pedidos' screenOptions={({ route }) => ({
@@ -122,11 +143,15 @@ export default function App({estafeta}) {
         }}>
         <Tab.Screen name="Pedidos" component={OrdersStack} initialParams={estafeta={estafeta}}/>
         <Tab.Screen name="Feedback" component={FeedbackStack} initialParams={estafeta={estafeta}}/>
+        <Tab.Screen name="Logout" component={Logout}/>
       </Tab.Navigator>
     </NavigationContainer>);
 }
 
 
 
+export function Logout({navigation}) {
 
-
+  Restart();
+  return(<></>);
+}

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { TextInput, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ClienteApp from './screens/AppCliente/AppClientes';
 import RestauranteApp from './screens/AppRestaurante/AppRestaurante';
 import EstafetaApp from './screens/AppEstafeta/AppEstafeta';
-
+import { Provider } from 'react-redux';
+import configStore from './Store';
+import { useDispatch } from 'react-redux';
+import { setLogged } from './assets/cartState';
 const users = {
     "cliente": {
         "type": "cliente",
@@ -42,7 +45,7 @@ const users = {
                 "prato": "Prato do dia Peixe",
                 "morada": "Universidade de Aveiro, DECA"
             },
-            
+
             {
                 "id": 2,
                 "restaurante": "Vegifruit",
@@ -58,37 +61,51 @@ const users = {
         ]
     },
 }
+const store = configStore();
+
+export default function AppWraper(route) {
+    return (
+        <Provider store={store}>
+            <AppContent />
+        </Provider>
+    );
+}
+
+
 
 const AppTab = createStackNavigator();
 
-export default function AppContent() {
+function AppContent() {
     const [user, setUser] = useState("");
-    const [isLogged, setIsLogged] = useState(false);
     const [isCliente, setIsCliente] = useState(false);
     const [isRestaurante, setIsRestaurante] = useState(false);
     const [isEstafeta, setIsEstafeta] = useState(false);
+    let logged = store.getState();
+    logged = logged.cartReducer.isLogged;
     return (<>
-        {isLogged &&
+        {logged &&
             <>
                 {isCliente &&
-                    <ClienteApp />
+                    <ClienteApp setIsLogged />
                 }
                 {isRestaurante &&
-                    <RestauranteApp restaurante={users[user]} />
+                    <RestauranteApp restaurante={users[user]} setIsLogged />
                 }
                 {isEstafeta &&
-                    <EstafetaApp estafeta={users[user]} />
+                    <EstafetaApp estafeta={users[user]} setIsLogged />
                 }
             </>
         }
-        {!isLogged &&
-            <Login user={user} setUser={setUser} setIsLogged={setIsLogged} setIsCliente={setIsCliente} setIsRestaurante={setIsRestaurante} setIsEstafeta={setIsEstafeta} />
+        {!logged &&
+            <Login user={user} setUser={setUser} setIsCliente={setIsCliente} setIsRestaurante={setIsRestaurante} setIsEstafeta={setIsEstafeta} />
         }
     </>);
 }
 
 function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsEstafeta, user, setUser }) {
     const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Nutrilink</Text>
@@ -105,15 +122,15 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
                             if (user === typeUser) {
                                 switch (users[user].type) {
                                     case "cliente":
-                                        setIsLogged(true);
+                                        dispatch(setLogged(true));
                                         setIsCliente(true);
                                         break;
                                     case "restaurante":
-                                        setIsLogged(true);
+                                        dispatch(setLogged(true));
                                         setIsRestaurante(true);
                                         break;
                                     case "estafeta":
-                                        setIsLogged(true);
+                                        dispatch(setLogged(true));
                                         setIsEstafeta(true);
                                         break;
                                     default:
@@ -130,11 +147,6 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
             </View>
         </View>
     );
-}
-
-const goToApp = (navigation, user, password,) => {
-    console.log(navigation)
-
 }
 
 const styles = StyleSheet.create({

@@ -2,8 +2,14 @@ import { combineReducers } from 'redux';
 import { restaurants } from '../screens/AppCliente/AppClientes';
 const INITIAL_CART = {
     cart: [],
-    restaurant: ''
+    restaurant: '',
+    isLogged: false
 }
+
+export const setLogged = val => ({
+    'type' : 'setLogged',
+    'payload' : val
+});
 
 export const addPrato = prato => ({
     'type' : 'addPrato',
@@ -28,7 +34,10 @@ function cartReducer(state = INITIAL_CART, action)   {
         case 'delPrato':
             return{...state,
             cart: state.cart.filter(prato => prato !== action.payload)}
-        default:
+        case 'setLogged':
+            return{...state, 
+                isLogged: action.payload}
+            default:
             return state;
     }
 }

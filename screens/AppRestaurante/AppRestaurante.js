@@ -4,6 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RestaurantDishes from './PratosStack';
 import OrdersStack from './OrdersStack';
+import {Restart} from 'fiction-expo-restart';
+import { Provider } from 'react-redux';
+import configStore from '../../Store';
+import { setLogged } from '../../assets/cartState';
+import { useDispatch } from 'react-redux';
 var imgVegifruit = require('../../assets/vegifruit.png');
 var imgGreenCity = require('../../assets/greencity.png');
 var imgSaladasmais = require('../../assets/saladasmais.jpg');
@@ -99,9 +104,24 @@ export const restaurants = {
   },
 }
 
+
+const store = configStore();
+
+
+export default function AppWraper(route) {
+  console.log(route)
+  return(
+    <Provider store={store}>
+      <App restaurante={route.restaurante}/>
+    </Provider>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
-export default function App({restaurante}) {
+function App({restaurante}) {
+  const dispatch = useDispatch();
+  dispatch(setLogged(false));
   console.log(restaurante)
   return (
     <NavigationContainer independent={true}>
@@ -122,10 +142,17 @@ export default function App({restaurante}) {
         }}>
         <Tab.Screen name="Restaurante" component={RestaurantDishes} initialParams={restaurante={restaurante}}/>
         <Tab.Screen name="Pedidos" component={OrdersStack} initialParams={restaurante={restaurante}}/>
+        <Tab.Screen name="Logout" component={Logout}/>
       </Tab.Navigator>
     </NavigationContainer>);
 }
 
+
+export function Logout({navigation}) {
+
+  Restart();
+  return(<></>);
+}
 
 
 
