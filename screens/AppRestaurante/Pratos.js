@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'r
 import { restaurants } from './AppRestaurante';
 export default function RestauranteMenu({route}) {
     //<Image so(urce={restaurante.image} style={styles.image}/>
-    console.log(route);
     const restaurante = route.params.restaurante.restaurante;
     return (
         <View>

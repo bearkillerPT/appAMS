@@ -3,6 +3,7 @@ import {Restart} from 'fiction-expo-restart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Cart from '../AppCliente/Cart';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Provider } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -152,13 +153,16 @@ function AppContent() {
       <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'Home') {
             iconName = "ios-home";
           } else if (route.name === 'Restaurantes') {
             iconName = "ios-restaurant";
           }
-          else iconName = "md-cart";
+          else if(route.name === "Carrinho")
+            iconName = "md-cart";
+          else
+            return <Icon1 name={"logout"} size={size} color={color} />;
+
           // You can return any component that you like here!
           return <Icon name={iconName} size={size} color={color} />;
         },

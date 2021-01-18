@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RestaurantDishes from './PratosStack';
 import OrdersStack from './OrdersStack';
@@ -109,7 +110,6 @@ const store = configStore();
 
 
 export default function AppWraper(route) {
-  console.log(route)
   return(
     <Provider store={store}>
       <App restaurante={route.restaurante}/>
@@ -122,18 +122,18 @@ const Tab = createBottomTabNavigator();
 function App({restaurante}) {
   const dispatch = useDispatch();
   dispatch(setLogged(false));
-  console.log(restaurante)
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator initialRouteName='Restaurante' screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Restaurantes') {
-            iconName = "ios-restaurant";
+          if (route.name === 'Restaurante') {
+            return <Icon name={"ios-restaurant"} size={size} color={color} />;
           }
-          else iconName = "md-cart";
-          // You can return any component that you like here!
-          return <Icon name={iconName} size={size} color={color} />;
+          else if (route.name === "Pedidos")
+            return <Icon1 name={"food"} size={size} color={color} />;
+          else 
+            return <Icon1 name={"logout"} size={size} color={color} />;
         },
       })}
         tabBarOptions={{

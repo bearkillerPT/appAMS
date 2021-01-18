@@ -13,8 +13,6 @@ export function CartScreen(props) {
     const dispatch = useDispatch(); 
     const cart = useSelector(state => state.cartReducer.cart);
     const rest = useSelector(state => state.cartReducer.restaurant);
-    console.log(cart);
-    console.log(rest);
     const getTotal = () => {
         let res = 0;
         for (let prato of cart) {
@@ -54,8 +52,6 @@ export function CartScreen(props) {
 const Stack = createStackNavigator();
 
 export default function Cart(route) {
-    console.log("navigator")
-    console.log(route)
     return (
         <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' },  headerTintColor:'white' }}>
             <Stack.Screen name="Carrinho" component={CartScreen} />
@@ -63,7 +59,7 @@ export default function Cart(route) {
 
 }
 
-const mapStateToProps = (state) => {console.log("mapState");console.log(state.cartReducer.cart); return {cartList : state.cartReducer.cart }};
+const mapStateToProps = (state) => {return {cartList : state.cartReducer.cart }};
 
 
 const mapDispatchToProps = (dispatch) => {

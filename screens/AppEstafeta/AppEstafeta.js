@@ -3,7 +3,9 @@ import { Provider } from 'react-redux';
 import configStore from '../../Store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon1 from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/MaterialIcons';
+import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import OrdersStack from './OrdersStack';
 import {Restart} from 'fiction-expo-restart';
 import { useDispatch } from 'react-redux';
@@ -120,21 +122,23 @@ export default function AppWraper(route) {
 const Tab = createBottomTabNavigator();
 
 function App({restaurante}) {
-  console.log(restaurante);
   const dispatch = useDispatch();
   let estafeta = restaurante.estafeta;
   dispatch(setLogged(false));
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator initialRouteName='Pedidos' screenOptions={({ route }) => ({
+        
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'Restaurantes') {
-            iconName = "ios-restaurant";
-          }
-          else iconName = "md-cart";
-          // You can return any component that you like here!
-          return <Icon name={iconName} size={size} color={color} />;
+          if (route.name === 'Pedidos') 
+            return <Icon1 name={"ios-restaurant"} size={size} color={color} />;
+
+          else if (route.name === 'Feedback')
+            return <Icon2 name={"feedback"} size={size} color={color} />;
+
+          else 
+            return <Icon3 name={"logout"} size={size} color={color} />;
+          
         },
       })}
         tabBarOptions={{
