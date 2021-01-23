@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import configStore from './Store';
 import { useDispatch } from 'react-redux';
 import { database } from 'firebase/app';
+import { Restart } from 'fiction-expo-restart';
 var firebase = require('firebase/app');
 require('firebase/database');
 var xmasPromo = require('./assets/xmaspromo.jpg');
@@ -123,6 +124,7 @@ function AppContent() {
     const [isCliente, setIsCliente] = useState(false);
     const [isRestaurante, setIsRestaurante] = useState(false);
     const [isEstafeta, setIsEstafeta] = useState(false);
+    const [toRegister, setToRegister] = useState(false);
     let logged = store.getState();
     let user = logged.cartReducer.user;
     logged = logged.cartReducer.isLogged;
@@ -140,13 +142,56 @@ function AppContent() {
                 }
             </>
         }
-        {!logged &&
-            <Login user={user} setUser={setUser} setIsCliente={setIsCliente} setIsRestaurante={setIsRestaurante} setIsEstafeta={setIsEstafeta} />
+        {!logged && !toRegister &&
+            <Login user={user} setUser={setUser} setIsCliente={setIsCliente} setIsRestaurante={setIsRestaurante} setIsEstafeta={setIsEstafeta} setToRegister={setToRegister} />
+        }
+        {!logged && toRegister &&
+            <Register setToRegister={setToRegister} />
         }
     </>);
 }
 
-function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsEstafeta, user, setUser }) {
+function Register({ setToRegister }) {
+    const [user, setUser] = useState("");
+    const [password, setPassword] = useState("");
+    const [confPass, setConfPass] = useState("");
+    const [users, setUsers] = useState({});
+    useEffect(() => {
+        firebase.database().ref("Users").once('value').then(res => setUsers(res.val()));
+    }, []);
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Nutrilink</Text>
+            <View style={styles.loginContainer}>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Username' style={styles.input} onChangeText={user => setUser(user)} />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Password' style={styles.input} onChangeText={pass => setPassword(pass)} secureTextEntry />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Confirm Password' style={styles.input} onChangeText={pass => setConfPass(pass)} secureTextEntry />
+                </View>
+                <View style={styles.containerRow}>
+                    <TouchableOpacity style={styles.loginButtonContainer} onPress={() => {
+                        if (password == confPass) {
+                            let tmpUsers = users
+                            tmpUsers[user]= {type: 'cliente', password:password};
+                            console.log(tmpUsers);
+                            db.ref("Users").set(tmpUsers);
+                            setToRegister(false);
+                            Restart();
+                        }
+                    }}>
+                        <Text style={styles.loginButtonText}>Confirmar</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+    );
+}
+
+function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsEstafeta, user, setUser, setToRegister }) {
     const [password, setPassword] = useState("");
     const [users, setUsers] = useState({});
     const dispatch = useDispatch();
@@ -173,28 +218,29 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
                         console.log(users);
                         for (let typeUser of Object.keys(users))
                             if (user === typeUser) {
-                                switch (users[user].type) {
-                                    case "cliente":
-                                        dispatch(setLogged(true));
-                                        setIsCliente(true);
-                                        break;
-                                    case "restaurante":
-                                        dispatch(setLogged(true));
-                                        setIsRestaurante(true);
-                                        setUser(users[user].restaurante);
-                                        break;
-                                    case "estafeta":
-                                        dispatch(setLogged(true));
-                                        setIsEstafeta(true);
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                if(password === users[user].password)
+                                    switch (users[user].type) {
+                                        case "cliente":
+                                            dispatch(setLogged(true));
+                                            setIsCliente(true);
+                                            break;
+                                        case "restaurante":
+                                            dispatch(setLogged(true));
+                                            setIsRestaurante(true);
+                                            setUser(users[user].restaurante);
+                                            break;
+                                        case "estafeta":
+                                            dispatch(setLogged(true));
+                                            setIsEstafeta(true);
+                                            break;
+                                        default:
+                                            break;
+                                    }
                             }
                     }}>
                         <Text style={styles.loginButtonText}>Login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.loginButtonContainer}>
+                    <TouchableOpacity style={styles.loginButtonContainer} onPress={() => { setToRegister(true); dispatch(setLogged(false)) }}>
                         <Text style={styles.loginButtonText}>Registar</Text>
                     </TouchableOpacity>
                 </View>

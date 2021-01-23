@@ -15,7 +15,7 @@ export default function RestauranteMenu({ route }) {
     }, []);
     const dispatch = useDispatch();
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
             <ScrollView>{
                 Object.keys(pratos).map(prato => {

@@ -95,15 +95,31 @@
                     "Pratos": [
                         "Creme de espinafres"
                     ],
-                    "Morada": "Universidade de Aveiro, DECA"
+                    "Morada": "Universidade de Aveiro, DEM"
                 },
                 "1": {
                     "Id": 1,
                     "Status": "ordered",
                     "Pratos": [
+                        "Creme de espinafres"
+                    ],
+                    "Morada": "Universidade de Aveiro, DECA"
+                },
+                "2": {
+                    "Id": 2,
+                    "Status": "ordered",
+                    "Pratos": [
                         "Quiche Vegetariana sGluten"
                     ],
                     "Morada": "Universidade de Aveiro, DETI"
+                },
+                "3": {
+                    "Id": 3,
+                    "Status": "ordered",
+                    "Pratos": [
+                        "Quiche Vegetariana sGluten"
+                    ],
+                    "Morada": "Universidade de Aveiro, DCM"
                 }
             },
             "image": "imgVegifruit"

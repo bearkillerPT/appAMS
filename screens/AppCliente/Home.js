@@ -9,7 +9,7 @@ export default function Home({ navigation, route }) {
       db.ref("promos").once('value').then(res => setPromos(res.val()));
     }, []);
     return (
-        <ScrollView>
+        <ScrollView style={{flex: 1}}>
             <View style={{ flexDirection: 'column', flex: 1, padding: 20 }}>
                 <Text style={styles.restaurantesOffer}>
                     Destaques:

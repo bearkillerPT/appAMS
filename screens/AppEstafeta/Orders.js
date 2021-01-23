@@ -11,7 +11,7 @@ export default function Orders({ route }) {
     getRestaurante(user, setPedidos);
     if (pedidos == null || Object.keys(pedidos).length == 0) return (<View><Text style={styles.restaurantesOffer}>Não há pedidos de momento!</Text></View>);
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Text style={styles.restaurantesOffer}>Pedidos:</Text>
             <ScrollView>{
                 Object.keys(pedidos).map(pedidoI => {

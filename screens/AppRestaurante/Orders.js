@@ -11,7 +11,7 @@ export default function Orders({ route }) {
     getRestaurante(user, setRestaurante, setRestaurants);
     if (restaurante == "" || Object.keys(restaurants).length == 0) return (<View><Text>Sorry</Text></View>);
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Text style={styles.restaurantesOffer}>Pedidos:</Text>
             <ScrollView>{
                 Object.keys(restaurants[restaurante].pedidos).map(pedidoI => {
