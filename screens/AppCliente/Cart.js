@@ -1,40 +1,65 @@
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useState } from 'react';
-import {delPrato} from '../../assets/cartState';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
+import { db, images, store } from '../../App';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
 var imgQuichVeg = require('../../assets/quicheVegsGluten.jpg');
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 var imgCremeEspi = require('../../assets/cremedeespinafres.jpg');
 var imgSaladaQSerra = require('../../assets/saladaqueijoserra.jpg');
 
 
 export function CartScreen(props) {
-    const dispatch = useDispatch(); 
-    const cart = useSelector(state => state.cartReducer.cart);
-    const rest = useSelector(state => state.cartReducer.restaurant);
+    const [cart, setCart] = useState({});
+    let user = store.getState().cartReducer.user;
+    const dispatch = useDispatch();
+    getCart(user, setCart);
+    useEffect(() => {
+        setTimeout(()=>getCart(user, setCart), 1000);
+        if(cart == null) setTimeout(()=>setCart({}), 1000);
+        
+    }, [cart])
     const getTotal = () => {
+        if (cart == null) return 0;
         let res = 0;
-        for (let prato of cart) {
-            res += prato.Preço;
+        for (let prato of Object.keys(cart)) {
+            res += cart[prato].Preco;
         }
         return res;
     }
+    if (cart == null) return (
+        <View>
+            <Text style={styles.restaurantesOffer}>Preço total: {getTotal()}€</Text>
+            <TouchableOpacity style={styles.payButtonContainer}>
+                <Text style={styles.payButtonText}>Pagar</Text>
+            </TouchableOpacity>
+        </View>
+    );
     return (
         <View>
             <ScrollView>{
-                cart.map(prato => {
+                Object.keys(cart).map(prato => {
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={prato.id} onPress={() => dispatch(delPrato(prato))}>
+                        <TouchableHighlight underlayColor={"#DDDDDD"} style={styles.button} key={prato} >
                             <View style={styles.containerRow}>
-                                <Image style={styles.image} source={prato.image} />
-                                <View style={styles.containerColumn}>
-                                    <Text style={styles.restaurantesOffer}>{prato.name}</Text>
-                                    <Text style={styles.foodText}>Opções : {prato.Opçoes}
-                                        {"\n"}
-                            Preço : {prato.Preço} €</Text>
+                                <View style={styles.containerRow}>
+                                    <Image style={styles.image} source={getImageByName(cart[prato].image)} />
                                 </View>
+                                <View style={styles.containerColumn}>
+                                    <Text style={styles.restaurantesOffer}>{cart[prato].Name}</Text>
+                                    <Text style={styles.foodText}>Opções : {cart[prato].Opcoes}
+                                        {"\n"}
+                                Preço : {cart[prato].Preco} €</Text>
+                                </View>
+                                <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.delButton} onPress={() => {
+                                    db.ref("Users/" + user + "/cart/" + prato).remove();
+                                    db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
+
+                                }}>
+                                    <Icon name="delete" size={25} />
+                                </TouchableHighlight>
                             </View>
+
                         </TouchableHighlight>
 
                     );
@@ -51,20 +76,32 @@ export function CartScreen(props) {
 
 const Stack = createStackNavigator();
 
+function getCart(user, setCart) {
+    db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
+}
+
 export default function Cart(route) {
     return (
-        <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' },  headerTintColor:'white' }}>
+        <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' }, headerTintColor: 'white' }}>
             <Stack.Screen name="Carrinho" component={CartScreen} />
         </Stack.Navigator>);
 
 }
 
-const mapStateToProps = (state) => {return {cartList : state.cartReducer.cart }};
+
+const getImageByName = (imageName) => {
+    let img = images[imageName]
+    if (img != null) return img
+    return images["default"]
+}
+
+
+const mapStateToProps = (state) => { return { cartList: state.cartReducer.cart } };
 
 
 const mapDispatchToProps = (dispatch) => {
-    return{
-        add : (prato) => dispatch({type: "addPrato", prato : prato})
+    return {
+        add: (prato) => dispatch({ type: "addPrato", prato: prato })
     }
 }
 
@@ -79,7 +116,6 @@ const styles = StyleSheet.create({
     },
     restaurantesOffer: {
         fontSize: 15,
-        padding: 15,
         fontWeight: 'bold',
         textAlign: 'left',
         color: 'black'
@@ -92,6 +128,13 @@ const styles = StyleSheet.create({
     button: {
         padding: 7,
         backgroundColor: "#DDDDDD",
+    },
+    delButton: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignSelf: 'center'
+
     },
     image: {
         width: 150,

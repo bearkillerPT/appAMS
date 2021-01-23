@@ -2,24 +2,35 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addPrato } from '../../assets/cartState';
-export default function RestauranteMenu({route}) {
-    //<Image source={restaurante.image} style={styles.image}/> 
-    const restaurante = route.params.restaurante;
+import { db, images, store } from '../../App';
+
+export default function RestauranteMenu({ route }) {
+    const restauranteName = route.params.restaurante["Name"];
+    const [pratos, setPratos] = useState({});
+    const [cart, setCart] = useState([]);
+    
+    let user = store.getState().cartReducer.user; 
+    useEffect(() => {
+        db.ref("restaurantes/" + restauranteName + "/Pratos").once('value').then(res => setPratos(res.val()));
+    }, []);
     const dispatch = useDispatch();
     return (
         <View>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
             <ScrollView>{
-                Object.keys(restaurante.Pratos).map(prato => {
+                Object.keys(pratos).map(prato => {
+                    console.log(pratos[prato])
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurante.Pratos[prato].id} onPress={() => dispatch(addPrato(restaurante.Pratos[prato]))}>
+                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={pratos[prato].Id} onPress={() => {                       
+                                db.ref('Users/' + user + "/cart").push(pratos[prato]);
+                            }}>
                             <View style={styles.containerRow}>
-                                <Image style={styles.image} source={restaurante.Pratos[prato].image} />
+                                <Image style={styles.image} source={getImageByName(pratos[prato].image)} />
                                 <View style={styles.containerColumn}>
-                                    <Text style={styles.restaurantesOffer}>{prato}</Text>
-                                    <Text style={styles.foodText}>Opções : {restaurante.Pratos[prato].Opçoes}
+                                    <Text style={styles.restaurantesOffer}>{pratos[prato].Name}</Text>
+                                    <Text style={styles.foodText}>Opções : {pratos[prato].Opcoes}
                                         {"\n"}
-                            Preço : {restaurante.Pratos[prato].Preço} €</Text>
+                            Preço : {pratos[prato].Preco} €</Text>
                                 </View>
                             </View>
                         </TouchableHighlight>
@@ -31,6 +42,11 @@ export default function RestauranteMenu({route}) {
     );
 }
 
+const getImageByName = (imageName) => {
+    let img = images[imageName]
+    if (img != null) return img
+    return images["default"]
+}
 
 const styles = StyleSheet.create({
     containerRow: {

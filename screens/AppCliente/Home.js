@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight, Linking } from 'react-native';
-import { restaurants, promos } from './AppClientes';
+import { db, images     } from '../../App';
 export default function Home({ navigation, route }) {
+    const [restaurants, setRestaurants] = useState({});
+    const [promos, setPromos] = useState({});
+    useEffect(() => {
+      db.ref("restaurantes").once('value').then(res => setRestaurants(res.val()));
+      db.ref("promos").once('value').then(res => setPromos(res.val()));
+    }, []);
     return (
         <ScrollView>
             <View style={{ flexDirection: 'column', flex: 1, padding: 20 }}>
@@ -15,8 +21,8 @@ export default function Home({ navigation, route }) {
                                 <TouchableHighlight underlayColor='#DDDDD' activeOpacity={0.3} style={styles.button} key={promos[restaurante].id} onPress={() => {}}>
                                     <View key={promos[restaurante].id} style={styles.restaurantesPromo}>{
                                         <View style={{ flexDirection: 'column' }}>
-                                            <Image source={promos[restaurante].image} style={styles.image} />
-                                            <Text style={styles.restaurantesTitle}>{restaurante}</Text>
+                                            <Image source={getImageByName(promos[restaurante].image)} style={styles.image} />
+                                            <Text style={styles.restaurantesTitle}>{promos[restaurante].Name}</Text>
                                             <Text style={styles.restaurantesDescr}>{promos[restaurante].descr}</Text>
                                         </View>
                                     }</View>
@@ -33,10 +39,10 @@ export default function Home({ navigation, route }) {
                         return (
                             <View style={styles.restaurantesPromo}>
                                 <TouchableHighlight underlayColor='#DDDDD' activeOpacity={0.3} style={styles.button} key={restaurants[restaurante].id} onPress={() => navigation.push('Pratos', { restaurante: restaurants[restaurante] })}>
-                                    <View key={restaurants[restaurante].id} style={styles.restaurantesPromo}>{
+                                    <View key={restaurants[restaurante].Id} style={styles.restaurantesPromo}>{
                                         <View style={{ flexDirection: 'column' }}>
-                                            <Image source={restaurants[restaurante].image} style={styles.image} />
-                                            <Text style={styles.restaurantesTitle}>{restaurante}</Text>
+                                            <Image source={getImageByName(restaurants[restaurante].image)} style={styles.image} />
+                                            <Text style={styles.restaurantesTitle}>{restaurants[restaurante].Name}</Text>
                                         </View>
                                     }</View>
                                 </TouchableHighlight>
@@ -51,6 +57,13 @@ export default function Home({ navigation, route }) {
             </View>
         </ScrollView>
     );
+}
+
+
+const getImageByName = (imageName) => {
+    let img = images[imageName]
+    if (img != null) return img
+    return images["default"]
 }
 
 

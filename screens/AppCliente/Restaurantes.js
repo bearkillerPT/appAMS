@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-import { restaurants } from '../AppCliente/AppClientes';
+import {db, images} from '../../App';
+
 export default function Home({ navigation, route }) {
+  const [restaurants, setRestaurants] = useState({});
+  useEffect(() => {
+    db.ref("restaurantes").once('value').then(res => setRestaurants(res.val()));
+  }, []);
+  console.log(restaurants);
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <ScrollView style={styles.container}>{
@@ -9,7 +15,7 @@ export default function Home({ navigation, route }) {
           return (
             <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={restaurants[restaurante].id} onPress={() => navigation.push('Pratos', { restaurante: restaurants[restaurante] })}>
               <View style={styles.restaurante}>
-                <Image source={restaurants[restaurante].image} style={styles.image} />
+                <Image source={getImageByName(restaurants[restaurante].image)} style={styles.image} />
                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
                   <Text style={styles.username}>{restaurante}</Text>
                   <Text style={styles.bio}>{restaurants[restaurante].PricePoint}{restaurants[restaurante].Tags.map(tag => " ⸎ " + tag)}</Text>
@@ -21,6 +27,12 @@ export default function Home({ navigation, route }) {
       }</ScrollView>
     </View>
   );
+}
+
+const getImageByName = (imageName) => {
+  let img = images[imageName]
+  if (img != null) return img
+  return images["default"]
 }
 
 
