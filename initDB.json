@@ -3,13 +3,12 @@
         "cliente": {
             "type": "cliente",
             "password": "cliente",
-            "cart" : {}
+            "cart": {}
         },
         "restaurante": {
             "type": "restaurante",
             "password": "restaurante",
-            "restaurante": "Vegifruit",
-            "cart" : {}
+            "restaurante": "Vegifruit"
         },
         "estafeta": {
             "type": "estafeta",
@@ -31,45 +30,24 @@
                     "rating": 4
                 }
             ],
-            "cart" : {},
-            "pedidos": [
-                {
-                    "id": 1,
-                    "restaurante": "Saladas+",
-                    "prato": "Prato do dia Peixe",
-                    "morada": "Universidade de Aveiro, DECA"
-                },
-                {
-                    "id": 2,
-                    "restaurante": "Vegifruit",
-                    "prato": "Salada de queijo da serra",
-                    "morada": "Universidade de Aveiro, DETI"
-                },
-                {
-                    "id": 3,
-                    "restaurante": "Green City quiches & saladas, co",
-                    "prato": "Quiche especial",
-                    "morada": "Universidade de Aveiro, CP"
-                }
-            ]
+            "Current Delivery" : {}
         }
     },
     "promos": {
         "Promocao de Natal": {
-          "Name": "Promoção de Natal",
-          "Descr": "Poupe 30% ou mais de 22/12 até 27/12",
-          "Id": 0,
-          "image": "xmasPromo"
+            "Name": "Promoção de Natal",
+            "Descr": "Poupe 30% ou mais de 22/12 até 27/12",
+            "Id": 0,
+            "image": "xmasPromo"
         },
         "Promocao de Ano Novo": {
-          "Name": "Promoção de Ano Novo",
-          "Descr": "Poupe 30% ou mais de 30/12 até 02/01",
-          "Id": 1,
-          "image": "newYearPromo"
-      
+            "Name": "Promoção de Ano Novo",
+            "Descr": "Poupe 30% ou mais de 30/12 até 02/01",
+            "Id": 1,
+            "image": "newYearPromo"
         }
-      },
-      
+    },
+    "Pedidos": {},
     "restaurantes": {
         "Vegifruit": {
             "Name": "Vegifruit",
@@ -92,18 +70,40 @@
                     "image": "imgSaladaQSerra"
                 },
                 "Quiche Vegetariana sGluten": {
-                    "Name": "Quiche Vegetariana s/Gluten",
+                    "Name": "Quiche Vegetariana sGluten",
                     "Id": 1,
                     "Preco": 6.5,
-                    "Opcoes": [""],
+                    "Opcoes": [
+                        ""
+                    ],
                     "image": "imgQuichVeg"
                 },
                 "Creme de espinafres": {
                     "Name": "Creme de espinafres",
                     "Id": 2,
                     "Preco": 6.5,
-                    "Opcoes": [""],
+                    "Opcoes": [
+                        ""
+                    ],
                     "image": "imgCremeEspi"
+                }
+            },
+            "pedidos": {
+                "0": {
+                    "Id": 1,
+                    "Status": "ordered",
+                    "Pratos": [
+                        "Creme de espinafres"
+                    ],
+                    "Morada": "Universidade de Aveiro, DECA"
+                },
+                "1": {
+                    "Id": 2,
+                    "Status": "ordered",
+                    "Pratos": [
+                        "Quiche Vegetariana sGluten"
+                    ],
+                    "Morada": "Universidade de Aveiro, DETI"
                 }
             },
             "image": "imgVegifruit"

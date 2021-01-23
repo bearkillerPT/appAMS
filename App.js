@@ -181,6 +181,7 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
                                     case "restaurante":
                                         dispatch(setLogged(true));
                                         setIsRestaurante(true);
+                                        setUser(users[user].restaurante);
                                         break;
                                     case "estafeta":
                                         dispatch(setLogged(true));

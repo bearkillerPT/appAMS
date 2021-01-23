@@ -1,31 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-import { restaurants } from './AppRestaurante';
+import { store, db, images } from '../../App';
+
 export default function Orders({ route }) {
-    //<Image so(urce={restaurante.image} style={styles.image}/>
-    console.log(route);
-    const restaurante = route.params.restaurante.restaurante.restaurante;
+    let user = store.getState().cartReducer.user;
+    const [restaurante, setRestaurante] = useState("");
+    const [restaurants, setRestaurants] = useState({});
+    getRestaurante(user, setRestaurante, setRestaurants);
+    if (restaurante == "" || Object.keys(restaurants).length == 0) return (<View><Text>Sorry</Text></View>);
     return (
         <View>
-            <Text style={styles.restaurantesOffer}>Pratos Pedidos:</Text>
+            <Text style={styles.restaurantesOffer}>Pedidos:</Text>
             <ScrollView>{
-                Object.keys(restaurants[restaurante].Pratos).map(prato => {
+                Object.keys(restaurants[restaurante].pedidos).map(pedidoI => {
                     return (
-                        <View style={styles.button} key={restaurants[restaurante].Pratos[prato].id}>
+                        <View style={styles.button} key={restaurants[restaurante].pedidos[pedidoI].Id}>
                             <View style={styles.containerRow}>
-                                <Image style={styles.image} source={restaurants[restaurante].Pratos[prato].image} />
+                                <Icon2 name="new-box" size={50} style={{alignSelf:'center', paddingHorizontal: 20}}/>
                                 <View style={styles.containerColumn}>
-                                    <Text style={styles.restaurantesOffer}>{prato}</Text>
-                                    <Text style={styles.foodText}>Opções : {restaurants[restaurante].Pratos[prato].Opçoes}
-                                        {"\n"}
-                                Preço : {restaurants[restaurante].Pratos[prato].Preço} €</Text>
+                                    <Text style={styles.restaurantesOffer}>{restaurants[restaurante].pedidos[pedidoI].Morada}</Text>
+                                    <Text style={styles.foodText}>Pratos : </Text>
+                                    <View style={styles.containerRow}>{
+                                        restaurants[restaurante].pedidos[pedidoI].Pratos.map(
+                                        (prato) => {return(
+                                        <View key={restaurants[restaurante].pedidos[pedidoI].Id}>
+                                            <Text style={{paddingLeft:10}}>{prato}</Text>
+                                        </View>);}
+                                        )
+                                    }
+                                    </View>
                                     <View style={styles.containerRow}>
-                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {}}>
+                                        <Text>Status:{'\n'}</Text>
+                                        <Text style={{paddingLeft: 10}}>{restaurants[restaurante].pedidos[pedidoI].Status}</Text>
+                                    </View>
+                                    <View style={styles.containerRow}>
+                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
+                                            let tmpPedido = restaurants[restaurante].pedidos[pedidoI]
+                                            tmpPedido.Status="waiting";
+                                            db.ref("restaurantes/" + restaurante + "/pedidos/" + pedidoI).set( tmpPedido)
+                                            db.ref("Pedidos").push(restaurants[restaurante].pedidos[pedidoI]);
+                                         }}>
                                             <Icon2 name="check-bold" size={15} style={{ borderRightWidth: 5, borderRightColor: 'rgba(0,0,0,0)' }} />
                                         </TouchableHighlight>
-                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button}  onPress={() => {}}>
+                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
+                                            db.ref("restaurantes/" + restaurante + "/pedidos/" + pedidoI).remove();
+                                         }}>
                                             <Icon2 name="delete" size={15} />
                                         </TouchableHighlight>
                                     </View>
@@ -38,6 +59,12 @@ export default function Orders({ route }) {
         </View>
 
     );
+}
+
+
+async function getRestaurante(user, setRestaurante, setRestaurants) {
+    await db.ref("Users/" + user).once('value').then(res => setRestaurante(res.val()["restaurante"]));
+    await db.ref("restaurantes").once('value').then(res => setRestaurants(res.val()));
 }
 
 

@@ -37,8 +37,7 @@ export default function AppContent() {
   const dispatch = useDispatch();
   dispatch(setLogged(false));
   
-  let logged = store.getState();
-  let user = logged.cartReducer.user; 
+  let user = store.getState().cartReducer.user; 
   console.log(user)
   return (
     <NavigationContainer independent={true}>
