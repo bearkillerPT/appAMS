@@ -90,7 +90,7 @@
             },
             "pedidos": {
                 "0": {
-                    "Id": 1,
+                    "Id": 0,
                     "Status": "ordered",
                     "Pratos": [
                         "Creme de espinafres"
@@ -98,7 +98,7 @@
                     "Morada": "Universidade de Aveiro, DECA"
                 },
                 "1": {
-                    "Id": 2,
+                    "Id": 1,
                     "Status": "ordered",
                     "Pratos": [
                         "Quiche Vegetariana sGluten"

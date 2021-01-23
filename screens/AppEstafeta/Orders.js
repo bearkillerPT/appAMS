@@ -1,33 +1,72 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight } from 'react-native';
-import { restaurants } from './AppEstafeta';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableHighlight, Button } from 'react-native';
+import { store, db, images } from '../../App';
+
 export default function Orders({ route }) {
-    //<Image so(urce={restaurante.image} style={styles.image}/>
-    console.log(route);
-    const estafeta = route.params.estafeta;
+    let user = store.getState().cartReducer.user;
+    const [pedidos, setPedidos] = useState({});
+    getRestaurante(user, setPedidos);
+    if (pedidos == null || Object.keys(pedidos).length == 0) return (<View><Text style={styles.restaurantesOffer}>Não há pedidos de momento!</Text></View>);
     return (
         <View>
-            <Text style={styles.restaurantesOffer}>Pratos Pedidos:</Text>
+            <Text style={styles.restaurantesOffer}>Pedidos:</Text>
             <ScrollView>{
-                estafeta.pedidos.map(pedido => {
+                Object.keys(pedidos).map(pedidoI => {
                     return (
-                        <View style={styles.button} key={pedido.id}>
+                        <View style={styles.button} key={pedidos[pedidoI].Id}>
                             <View style={styles.containerRow}>
-                                <Image style={styles.image} source={restaurants[pedido.restaurante].image} />
+                                <Icon2 name="new-box" size={50} style={{ alignSelf: 'center', paddingHorizontal: 20 }} />
                                 <View style={styles.containerColumn}>
-                                    <Text style={styles.restaurantesOffer}>{pedido.restaurante}</Text>
-                                    <Text style={styles.foodText}>{pedido.prato}
-                                        {"\n"}
-                                        Morada : {pedido.morada}</Text>
+                                    <Text style={styles.restaurantesOffer}>{pedidos[pedidoI].Morada}</Text>
+                                    <Text style={styles.foodText}>Pratos : </Text>
+                                    <View style={styles.containerRow}>{
+                                        pedidos[pedidoI].Pratos.map(
+                                            (prato) => {
+                                                return (
+                                                    <View key={pedidos[pedidoI].Id}>
+                                                        <Text style={{ paddingLeft: 10 }}>{prato}</Text>
+                                                    </View>);
+                                            }
+                                        )
+                                    }
+                                    </View>
                                     <View style={styles.containerRow}>
-                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {}}>
-                                            <Icon2 name="check-bold" size={17} style={{  }} />
-                                        </TouchableHighlight>
-                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button}  onPress={() => {}}>
-                                            <Icon2 name="delete" size={17} />
-                                        </TouchableHighlight>
+                                        <Text>Status:{'\n'}</Text>
+                                        <Text style={{ paddingLeft: 10 }}>{pedidos[pedidoI].Status}</Text>
+                                    </View>
+                                    {pedidos[pedidoI].Restaurante &&
+                                        <View style={styles.containerRow}>
+                                            <Text>Restaurante:{'\n'}</Text>
+                                            <Text style={{ paddingLeft: 10 }}>{pedidos[pedidoI].Restaurante}</Text>
+                                        </View>
+                                    }
+                                    {pedidos[pedidoI].Estafeta &&
+                                        <View style={styles.containerRow}>
+                                            <Text>Estafeta:{'\n'}</Text>
+                                            <Text style={{ paddingLeft: 10 }}>{pedidos[pedidoI].Estafeta}</Text>
+                                        </View>
+                                    }
+                                    <View style={styles.containerRow}>
+                                        {!pedidos[pedidoI].Estafeta && <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
+                                            let tmpPedido = pedidos[pedidoI]
+                                            tmpPedido.Status = "A entregar";
+                                            tmpPedido.Estafeta = user;
+                                            db.ref("/Pedidos/" + pedidoI).set(tmpPedido);
+                                            db.ref("/restaurantes/" + pedidos[pedidoI].Restaurante + "/pedidos/" + pedidos[pedidoI].Id).set(tmpPedido);
+                                        }}>
+                                            <Icon2 name="check-bold" size={15} style={{ borderRightWidth: 5, borderRightColor: 'rgba(0,0,0,0)' }} />
+                                        </TouchableHighlight>}
+                                        {pedidos[pedidoI].Estafeta && pedidos[pedidoI].Status != "Entregue" && <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
+                                            let tmpPedido = pedidos[pedidoI]
+                                            tmpPedido.Status = "Entregue";
+                                            db.ref("/Pedidos/" + pedidoI).set(tmpPedido);
+                                            db.ref("/restaurantes/" + pedidos[pedidoI].Restaurante + "/pedidos/" + pedidos[pedidoI].Id).set(tmpPedido);
+                                        }}>
+                                            <Text>Finalizar Encomenda!</Text>
+                                        </TouchableHighlight>}
                                     </View>
                                 </View>
                             </View>
@@ -38,6 +77,11 @@ export default function Orders({ route }) {
         </View>
 
     );
+}
+
+
+async function getRestaurante(user, setPedidos) {
+    await db.ref("Pedidos").once('value').then(res => { setPedidos(res.val()); });
 }
 
 
@@ -63,8 +107,7 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        padding: 5,
-        borderRadius: 13
+        padding: 7,
     },
     image: {
         width: 150,

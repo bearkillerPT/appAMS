@@ -35,15 +35,22 @@ export default function Orders({ route }) {
                                         <Text>Status:{'\n'}</Text>
                                         <Text style={{paddingLeft: 10}}>{restaurants[restaurante].pedidos[pedidoI].Status}</Text>
                                     </View>
+                                    {restaurants[restaurante].pedidos[pedidoI].Estafeta &&
                                     <View style={styles.containerRow}>
-                                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
+                                        <Text>Estafeta:{'\n'}</Text>
+                                        <Text style={{paddingLeft: 10}}>{restaurants[restaurante].pedidos[pedidoI].Estafeta}</Text>
+                                    </View>
+                                    }
+                                    <View style={styles.containerRow}>
+                                        {!restaurants[restaurante].pedidos[pedidoI].Estafeta && <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
                                             let tmpPedido = restaurants[restaurante].pedidos[pedidoI]
                                             tmpPedido.Status="waiting";
+                                            tmpPedido.Restaurante=restaurante;
                                             db.ref("restaurantes/" + restaurante + "/pedidos/" + pedidoI).set( tmpPedido)
                                             db.ref("Pedidos").push(restaurants[restaurante].pedidos[pedidoI]);
                                          }}>
                                             <Icon2 name="check-bold" size={15} style={{ borderRightWidth: 5, borderRightColor: 'rgba(0,0,0,0)' }} />
-                                        </TouchableHighlight>
+                                        </TouchableHighlight>}
                                         <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} onPress={() => {
                                             db.ref("restaurantes/" + restaurante + "/pedidos/" + pedidoI).remove();
                                          }}>
