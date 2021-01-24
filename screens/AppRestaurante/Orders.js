@@ -23,10 +23,10 @@ export default function Orders({ route }) {
                                     <Text style={styles.restaurantesOffer}>{restaurants[restaurante].pedidos[pedidoI].Morada}</Text>
                                     <Text style={styles.foodText}>Pratos : </Text>
                                     <View style={styles.containerRow}>{
-                                        restaurants[restaurante].pedidos[pedidoI].Pratos.map(
+                                        Object.keys(restaurants[restaurante].pedidos[pedidoI].Pratos).map(
                                         (prato) => {return(
-                                        <View key={restaurants[restaurante].pedidos[pedidoI].Id}>
-                                            <Text style={{paddingLeft:10}}>{prato}</Text>
+                                        <View key={restaurants[restaurante].pedidos[pedidoI].Pratos[prato].Id}>
+                                            <Text style={{paddingLeft:10}}>{restaurants[restaurante].pedidos[pedidoI].Pratos[prato].Name}</Text>
                                         </View>);}
                                         )
                                     }

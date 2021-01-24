@@ -8,22 +8,24 @@ export default function RestauranteMenu({ route }) {
     const restauranteName = route.params.restaurante["Name"];
     const [pratos, setPratos] = useState({});
     const [cart, setCart] = useState([]);
-    
-    let user = store.getState().cartReducer.user; 
+    getCart(user, setCart);
+    let user = store.getState().cartReducer.user;
     useEffect(() => {
+        db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
+        
         db.ref("restaurantes/" + restauranteName + "/Pratos").once('value').then(res => setPratos(res.val()));
     }, []);
     const dispatch = useDispatch();
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
             <ScrollView>{
                 Object.keys(pratos).map(prato => {
-                    console.log(pratos[prato])
                     return (
-                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={pratos[prato].Id} onPress={() => {                       
+                        <TouchableHighlight underlayColor={"#DDDDDD"} activeOpacity={0.3} style={styles.button} key={pratos[prato].Id} onPress={() => {
+                            if (checkSameRestaurant(cart, restauranteName))
                                 db.ref('Users/' + user + "/cart").push(pratos[prato]);
-                            }}>
+                        }}>
                             <View style={styles.containerRow}>
                                 <Image style={styles.image} source={getImageByName(pratos[prato].image)} />
                                 <View style={styles.containerColumn}>
@@ -46,6 +48,18 @@ const getImageByName = (imageName) => {
     let img = images[imageName]
     if (img != null) return img
     return images["default"]
+}
+
+function getCart(user, setCart) {
+}
+
+function checkSameRestaurant(cart, currentRestauranteName) {
+    if (cart == null) return true;
+    for (let prato in Object.values(cart)) {
+        if (prato.Restaurante != currentRestauranteName)
+            return false;
+    }
+    return true;
 }
 
 const styles = StyleSheet.create({

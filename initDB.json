@@ -61,6 +61,7 @@
             ],
             "Pratos": {
                 "Salada de queijo da serra": {
+                    "Restaurante" : "Vegifruit",
                     "Name": "Salada de queijo da serra",
                     "Id": 0,
                     "Preco": 7,
@@ -70,6 +71,7 @@
                     "image": "imgSaladaQSerra"
                 },
                 "Quiche Vegetariana sGluten": {
+                    "Restaurante" : "Vegifruit",
                     "Name": "Quiche Vegetariana sGluten",
                     "Id": 1,
                     "Preco": 6.5,
@@ -79,6 +81,7 @@
                     "image": "imgQuichVeg"
                 },
                 "Creme de espinafres": {
+                    "Restaurante" : "Vegifruit",
                     "Name": "Creme de espinafres",
                     "Id": 2,
                     "Preco": 6.5,
@@ -89,38 +92,7 @@
                 }
             },
             "pedidos": {
-                "0": {
-                    "Id": 0,
-                    "Status": "ordered",
-                    "Pratos": [
-                        "Creme de espinafres"
-                    ],
-                    "Morada": "Universidade de Aveiro, DEM"
-                },
-                "1": {
-                    "Id": 1,
-                    "Status": "ordered",
-                    "Pratos": [
-                        "Creme de espinafres"
-                    ],
-                    "Morada": "Universidade de Aveiro, DECA"
-                },
-                "2": {
-                    "Id": 2,
-                    "Status": "ordered",
-                    "Pratos": [
-                        "Quiche Vegetariana sGluten"
-                    ],
-                    "Morada": "Universidade de Aveiro, DETI"
-                },
-                "3": {
-                    "Id": 3,
-                    "Status": "ordered",
-                    "Pratos": [
-                        "Quiche Vegetariana sGluten"
-                    ],
-                    "Morada": "Universidade de Aveiro, DCM"
-                }
+                
             },
             "image": "imgVegifruit"
         },
@@ -137,6 +109,7 @@
             ],
             "Pratos": {
                 "Quiche especial": {
+                    "Restaurante" : "Green City quiches & saladas, co",
                     "Name": "Quiche especial",
                     "Id": 0,
                     "Preco": 6,
@@ -160,6 +133,7 @@
             ],
             "Pratos": {
                 "Sandes Base": {
+                    "Restaurante" : "Saladas+",
                     "Name": "Sandes Base",
                     "Id": 0,
                     "Preco": 3.10,
@@ -169,6 +143,7 @@
                     "image": "imgSandesBase"
                 },
                 "Prato do dia Peixe": {
+                    "Restaurante" : "Saladas+",
                     "Name": "Prato do dia Peixe",
                     "Id": 1,
                     "Preco": 7.45,
@@ -178,6 +153,7 @@
                     "image": "imgPratoPeixe"
                 },
                 "Prato do dia Carne": {
+                    "Restaurante" : "Saladas+",
                     "Name": "Prato do dia Carne",
                     "Id": 2,
                     "Preco": 7.45,

@@ -177,7 +177,6 @@ function Register({ setToRegister }) {
                         if (password == confPass) {
                             let tmpUsers = users
                             tmpUsers[user]= {type: 'cliente', password:password};
-                            console.log(tmpUsers);
                             db.ref("Users").set(tmpUsers);
                             setToRegister(false);
                             Restart();
@@ -213,9 +212,7 @@ function Login({ navigation, setIsLogged, setIsCliente, setIsRestaurante, setIsE
 
                         let logged = store.getState();
                         let user = logged.cartReducer.user;
-                        console.log(user)
                         firebase.database().ref("Users").once('value').then(res => setUsers(res.val()));
-                        console.log(users);
                         for (let typeUser of Object.keys(users))
                             if (user === typeUser) {
                                 if(password === users[user].password)
