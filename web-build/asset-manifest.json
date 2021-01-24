@@ -1,0 +1,41 @@
+{
+  "files": {
+    "app.js": "/static/js/app.d7e29062.chunk.js",
+    "app.js.map": "/static/js/app.d7e29062.chunk.js.map",
+    "runtime~app.js": "/static/js/runtime~app.2e9f1821.js",
+    "runtime~app.js.map": "/static/js/runtime~app.2e9f1821.js.map",
+    "static/js/2.420ba77e.chunk.js": "/static/js/2.420ba77e.chunk.js",
+    "static/js/2.420ba77e.chunk.js.map": "/static/js/2.420ba77e.chunk.js.map",
+    "fonts/Ionicons.ttf": "/./fonts/Ionicons.ttf",
+    "fonts/MaterialCommunityIcons.ttf": "/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/MaterialIcons.ttf": "/./fonts/MaterialIcons.ttf",
+    "favicon-16.png": "/favicon-16.png",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon.ico": "/favicon.ico",
+    "index.html": "/index.html",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "static/js/2.420ba77e.chunk.js.LICENSE.txt": "/static/js/2.420ba77e.chunk.js.LICENSE.txt",
+    "static/media/bell.png": "/static/media/bell.cf04af27.png",
+    "static/media/cremedeespinafres.jpg": "/static/media/cremedeespinafres.d64f4c65.jpg",
+    "static/media/favicon.png": "/static/media/favicon.fa4783d1.png",
+    "static/media/greencity.png": "/static/media/greencity.978665f2.png",
+    "static/media/heart.png": "/static/media/heart.23b5c2c0.png",
+    "static/media/newYearPromo.jpg": "/static/media/newYearPromo.40cdf873.jpg",
+    "static/media/pratoCarne.jpg": "/static/media/pratoCarne.92d38d67.jpg",
+    "static/media/pratoPeixe.jpg": "/static/media/pratoPeixe.20f9cfe0.jpg",
+    "static/media/quicheVegsGluten.jpg": "/static/media/quicheVegsGluten.cfd4c587.jpg",
+    "static/media/rocket.png": "/static/media/rocket.d2f3bf41.png",
+    "static/media/saladaqueijoserra.jpg": "/static/media/saladaqueijoserra.b0d06c06.jpg",
+    "static/media/saladasmais.jpg": "/static/media/saladasmais.0273522e.jpg",
+    "static/media/sandesBase.jpg": "/static/media/sandesBase.69a34ba3.jpg",
+    "static/media/star.png": "/static/media/star.69c71386.png",
+    "static/media/vegifruit.png": "/static/media/vegifruit.9cd2e61a.png",
+    "static/media/xmaspromo.jpg": "/static/media/xmaspromo.1e866ef4.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.2e9f1821.js",
+    "static/js/2.420ba77e.chunk.js",
+    "static/js/app.d7e29062.chunk.js"
+  ]
+}
