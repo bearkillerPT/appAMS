@@ -1,8 +1,18 @@
-No nosso incremento implementamos as interfaces de utilização de cada possível utilizador, isto é, a interface dirigida ao estafeta, a interface dirigida ao cliente e, por fim, a interface dirigida ao restaurante/representante do restaurante.
-A app móvel utilizável com suporte em Android que pode ser encontrada em https://micro-site-ams.herokuapp.com/ clicando em “Try Live” debaixo da secção projetos.
+No nosso incremento implementamos as interfaces de utilizaÃ§Ã£o de cada possÃ­vel utilizador, isto Ã©, a interface dirigida ao estafeta, a interface dirigida ao cliente e, por fim, a interface dirigida ao restaurante/representante do restaurante.
+A app mÃ³vel utilizÃ¡vel com suporte em Android que pode ser encontrada em https://micro-site-ams.herokuapp.com/ clicando em â€œTry Liveâ€ debaixo da secÃ§Ã£o projetos ou seguindo o seu prÃ³prio link: https://nutrilink.herokuapp.com/ .
 
-Aqui também pode ser encontrado o código desenvolvido (https://github.com/bearkillerPT/appAMS) e o download da app para ser utilizada em Android clicando no botão “Download”.
 
-Depois de estar na app na secção username consoante a interface que queremos ver colocamos como username o utilizador, i.e., se quisesse entrar como cliente colocaria o username “cliente” e uma password aleatória.
-	
-Depois de estar logado ainda podemos dar logout clicando no botão correspondente.
+Depois de estar na app na secÃ§Ã£o username consoante a interface que queremos ver colocamos como username o utilizador, i.e., se quisesse entrar como cliente colocaria o username â€œclienteâ€ e password "cliente".
+
+Todos os registos efetuados sÃ£o de clientes, a atribuiÃ§Ã£o do estatuto de restaurante/estafeta tem de ser feita pelos administradore.
+
+Para efeitos de teste existe uma conta de restaurante:
+Login: "restaurante"
+Password: "restaurante"
+Esta conta estÃ¡ ligada ao restaurante Vegifruit.
+
+Existe tambÃ©m para o mesmo efeito uma conta de estafeta:
+Login: "estafeta"
+Password: "estafeta"
+
+Depois de estar logado ainda podemos dar logout clicando no botÃ£o correspondente.
