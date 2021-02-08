@@ -9,7 +9,7 @@ export default function Orders({ route }) {
     const [restaurante, setRestaurante] = useState("");
     const [restaurants, setRestaurants] = useState({});
     getRestaurante(user, setRestaurante, setRestaurants);
-    if (restaurante == "" || Object.keys(restaurants).length == 0) return (<View><Text>Sorry</Text></View>);
+    if (restaurante == "" || Object.keys(restaurants).length == 0 || restaurants[restaurante].pedidos == null) return (<View><Text>Não há pedidos feitos!</Text></View>);
     return (
         <View style={{flex: 1}}>
             <Text style={styles.restaurantesOffer}>Pedidos:</Text>
@@ -25,7 +25,7 @@ export default function Orders({ route }) {
                                     <View style={styles.containerRow}>{
                                         Object.keys(restaurants[restaurante].pedidos[pedidoI].Pratos).map(
                                         (prato) => {return(
-                                        <View key={restaurants[restaurante].pedidos[pedidoI].Pratos[prato].Id}>
+                                        <View key={restaurants[restaurante].pedidos[pedidoI].Pratos[prato]  }>
                                             <Text style={{paddingLeft:10}}>{restaurants[restaurante].pedidos[pedidoI].Pratos[prato].Name}</Text>
                                         </View>);}
                                         )

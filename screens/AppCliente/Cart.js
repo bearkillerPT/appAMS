@@ -67,12 +67,10 @@ export function CartScreen({ navigation }) {
     const [cart, setCart] = useState({});
     let user = store.getState().cartReducer.user;
     const dispatch = useDispatch();
-    getCart(user, setCart);
-    useEffect(() => {
-        setTimeout(() => getCart(user, setCart), 1000);
-        if (cart == null) setTimeout(() => setCart({}), 1000);
-
-    }, [cart])
+    db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
+    
+    
+    setTimeout(() => {if (cart == null) setCart({})}, 100);
     const getTotal = () => {
         if (cart == null) return 0;
         let res = 0;
@@ -130,10 +128,6 @@ export function CartScreen({ navigation }) {
 
 const Stack = createStackNavigator();
 
-function getCart(user, setCart) {
-    db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
-}
-
 export default function Cart(route) {
     return (
         <Stack.Navigator initialroute={'Carrinho'} screenOptions={{ headerTitleAlign: 'center', headerStyle: { backgroundColor: 'darkcyan' }, headerTintColor: 'white' }}>
@@ -151,14 +145,6 @@ const getImageByName = (imageName) => {
 }
 
 
-const mapStateToProps = (state) => { return { cartList: state.cartReducer.cart } };
-
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        add: (prato) => dispatch({ type: "addPrato", prato: prato })
-    }
-}
 
 const styles = StyleSheet.create({
     container: {

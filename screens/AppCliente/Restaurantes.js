@@ -4,10 +4,7 @@ import {db, images} from '../../App';
 
 export default function Home({ navigation, route }) {
   const [restaurants, setRestaurants] = useState({});
-  useEffect(() => {
-    db.ref("restaurantes").once('value').then(res => setRestaurants(res.val()));
-  }, []);
-  console.log(restaurants);
+  db.ref("restaurantes").once('value').then(res => setRestaurants(res.val()));
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <ScrollView style={styles.container}>{

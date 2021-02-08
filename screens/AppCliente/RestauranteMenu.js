@@ -8,14 +8,11 @@ export default function RestauranteMenu({ route }) {
     const restauranteName = route.params.restaurante["Name"];
     const [pratos, setPratos] = useState({});
     const [cart, setCart] = useState([]);
-    getCart(user, setCart);
     let user = store.getState().cartReducer.user;
     useEffect(() => {
         db.ref("Users/" + user + "/cart").once('value').then(res => { setCart(res.val()) });
-        
         db.ref("restaurantes/" + restauranteName + "/Pratos").once('value').then(res => setPratos(res.val()));
     }, []);
-    const dispatch = useDispatch();
     return (
         <View style={{ flex: 1 }}>
             <Text style={styles.restaurantesOffer}>Pratos Disponíveis:</Text>
@@ -50,8 +47,6 @@ const getImageByName = (imageName) => {
     return images["default"]
 }
 
-function getCart(user, setCart) {
-}
 
 function checkSameRestaurant(cart, currentRestauranteName) {
     if (cart == null) return true;
